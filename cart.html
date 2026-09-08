@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — fuck a Dress code</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="announcement">
+    Spend $40 → free patch · Spend $75 → free shipping + mystery shirt
+  </div>
+
+  <header class="site-header">
+    <a href="index.html" class="logo">
+      <div class="logo-letters">
+        <span>F</span>
+        <span>A</span>
+        <span>D</span>
+      </div>
+      <div class="logo-cross">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="42" y="10" width="16" height="80" fill="#fff"/>
+          <rect x="20" y="32" width="60" height="16" fill="#fff"/>
+          <circle cx="50" cy="50" r="38" stroke="#ff0000" stroke-width="8" fill="none"/>
+          <line x1="22" y1="22" x2="78" y2="78" stroke="#ff0000" stroke-width="8"/>
+        </svg>
+      </div>
+    </a>
+
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Shop</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="cart.html" class="cart-link active">Cart <span class="cart-count" style="display:none;">0</span></a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="cart-page">
+    <h1 class="section-title" style="margin-bottom:40px;">Your Cart</h1>
+
+    <div id="cart-empty" class="cart-empty" style="display:none;">
+      <p>Your cart is empty.</p>
+      <a href="index.html" class="btn" style="margin-top:20px;">Back to shop</a>
+    </div>
+
+    <div id="cart-items">
+      <!-- filled by JS -->
+    </div>
+
+    <div id="cart-summary" class="cart-summary" style="display:none;">
+      <!-- Promo status -->
+      <div class="promo-box">
+        <h3>Unlocks</h3>
+        <ul class="promo-list">
+          <li id="promo-40"><span class="check">○</span> Spend $40+ for a free patch</li>
+          <li id="promo-75"><span class="check">○</span> Spend $75+ for free shipping + free mystery shirt</li>
+        </ul>
+      </div>
+
+      <!-- Discount code -->
+      <div class="discount-row">
+        <input type="text" id="discount-input" placeholder="Discount code">
+        <button class="btn" onclick="handleDiscountApply()">Apply</button>
+      </div>
+
+      <!-- Totals -->
+      <div class="totals">
+        <div class="totals-row">
+          <span>Subtotal</span>
+          <span id="subtotal-val">$0.00</span>
+        </div>
+        <div class="totals-row" id="discount-row" style="display:none;">
+          <span id="discount-label">Discount</span>
+          <span id="discount-val">-$0.00</span>
+        </div>
+        <div class="totals-row">
+          <span>Shipping</span>
+          <span id="shipping-val">$8.00</span>
+        </div>
+        <div class="totals-row total">
+          <span>Total</span>
+          <span id="total-val">$0.00</span>
+        </div>
+      </div>
+
+      <button class="btn btn-solid" style="width:100%; margin-top:28px;" onclick="handleCheckout()">
+        Checkout with Stripe
+      </button>
+
+      <p class="checkout-note">
+        Secure payment powered by Stripe.<br>
+        Cards, Apple Pay & Google Pay accepted.
+      </p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div>
+      <a href="index.html">Shop</a>
+      <a href="cart.html">Cart</a>
+      <a href="admin.html">Admin</a>
+    </div>
+    <p style="margin-top:16px;">© 2026 fuck a Dress code</p>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/cart-page.js"></script>
+</body>
+</html>

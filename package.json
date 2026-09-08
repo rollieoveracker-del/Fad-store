@@ -1,0 +1,8 @@
+{
+  "name": "fuck-a-dress-code",
+  "version": "1.0.0",
+  "description": "fuck a Dress code store",
+  "dependencies": {
+    "stripe": "^16.0.0"
+  }
+}

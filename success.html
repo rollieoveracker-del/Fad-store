@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed — fuck a Dress code</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="announcement">
+    SPEND $40 → FREE PATCH · SPEND $75 → FREE SHIPPING + MYSTERY SHIRT
+  </div>
+
+  <header class="site-header">
+    <a href="index.html" class="logo">
+      <div class="logo-letters">
+        <span>F</span>
+        <span>A</span>
+        <span>D</span>
+      </div>
+      <div class="logo-cross">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="42" y="10" width="16" height="80" fill="#fff"/>
+          <rect x="20" y="32" width="60" height="16" fill="#fff"/>
+          <circle cx="50" cy="50" r="38" stroke="#ff0000" stroke-width="8" fill="none"/>
+          <line x1="22" y1="22" x2="78" y2="78" stroke="#ff0000" stroke-width="8"/>
+        </svg>
+      </div>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">Shop</a></li>
+        <li><a href="cart.html">Cart</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero" style="padding: 100px 24px;">
+    <h1 style="font-size: clamp(28px, 6vw, 48px);">Thank you</h1>
+    <p style="color: var(--text-muted); max-width: 420px; margin: 16px auto 32px;">
+      Your order is confirmed. You’ll get an email from Stripe with the details.
+      I’ll ship your shit as soon as possible.
+    </p>
+    <a href="index.html" class="btn btn-accent">Back to shop</a>
+  </section>
+
+  <footer class="site-footer">
+    <p>© 2026 fuck a Dress code</p>
+  </footer>
+
+  <script>
+    // Clear the cart after successful payment
+    localStorage.removeItem("fad_cart");
+    localStorage.removeItem("fad_discount");
+  </script>
+</body>
+</html>

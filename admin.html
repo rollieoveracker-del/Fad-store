@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — fuck a Dress code</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="index.html" class="logo">
+      <div class="logo-letters">
+        <span>F</span>
+        <span>A</span>
+        <span>D</span>
+      </div>
+      <div class="logo-cross">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="42" y="10" width="16" height="80" fill="#fff"/>
+          <rect x="20" y="32" width="60" height="16" fill="#fff"/>
+          <circle cx="50" cy="50" r="38" stroke="#ff0000" stroke-width="8" fill="none"/>
+          <line x1="22" y1="22" x2="78" y2="78" stroke="#ff0000" stroke-width="8"/>
+        </svg>
+      </div>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="index.html">← Back to shop</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Login -->
+  <div id="admin-login" class="admin-login">
+    <h1>Admin</h1>
+    <form class="admin-form" onsubmit="handleLogin(event)">
+      <div>
+        <label>Password</label>
+        <input type="password" id="admin-password" required autofocus>
+      </div>
+      <button type="submit" class="btn btn-solid" style="width:100%;">Enter</button>
+    </form>
+    <p style="text-align:center;margin-top:20px;font-size:12px;color:var(--text-muted);">
+      Default password is in the code (js/admin.js). Change it.
+    </p>
+  </div>
+
+  <!-- Panel -->
+  <div id="admin-panel" class="admin-panel" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;">
+      <h1 style="margin:0;">Admin</h1>
+      <button class="btn" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Add / Edit form -->
+    <h2 id="form-title" style="font-size:14px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;">Add New Shirt</h2>
+    <form id="product-form" class="admin-form" onsubmit="handleProductForm(event)">
+      <input type="hidden" id="form-id">
+
+      <div>
+        <label>Name *</label>
+        <input type="text" id="form-name" required placeholder="e.g. Richard Ramirez Tee">
+      </div>
+
+      <div>
+        <label>Price (USD) *</label>
+        <input type="number" id="form-price" step="0.01" min="0" required placeholder="45">
+      </div>
+
+      <div>
+        <label>Description</label>
+        <textarea id="form-desc" placeholder="Hand-painted one-of-one..."></textarea>
+      </div>
+
+      <div>
+        <label>Image URL</label>
+        <input type="url" id="form-image" placeholder="https://... (or leave blank for placeholder)">
+      </div>
+
+      <div>
+        <label>Sizes (comma separated)</label>
+        <input type="text" id="form-sizes" placeholder="S, M, L, XL, XXL" value="S, M, L, XL">
+      </div>
+
+      <div>
+        <label>Stock (format: S:2, M:3, L:1)</label>
+        <input type="text" id="form-stock" placeholder="S:1, M:2, L:1, XL:1">
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;">
+        <input type="checkbox" id="form-featured" style="width:auto;">
+        <label for="form-featured" style="margin:0;">Featured</label>
+      </div>
+
+      <button type="submit" class="btn btn-solid">Save Product</button>
+      <button type="button" class="btn" onclick="resetForm()">Clear Form</button>
+    </form>
+
+    <!-- Existing products -->
+    <div class="admin-product-list">
+      <h2 style="font-size:14px;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;">Current Products</h2>
+      <div id="admin-product-list"></div>
+      <button class="btn" style="margin-top:24px;" onclick="resetToDefaults()">Reset to Default Catalog</button>
+    </div>
+  </div>
+
+  <script src="js/products.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
