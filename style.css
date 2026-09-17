@@ -1,7 +1,6 @@
 /* ============================================
    FUCK A DRESS CODE
    Dark / Punk / DIY aesthetic
-   Inspired by BanishedUSA + Razorskull
    ============================================ */
 
 :root {
@@ -15,6 +14,11 @@
   --success: #00ff66;
   --font-main: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-display: "Impact", "Arial Black", sans-serif;
+}
+
+@font-face {
+  font-family: 'GothicCustom';
+  src: local('Old English Text MT'), local('Texturina'), local('Cloister Black'), local('UnifrakturMaguntia');
 }
 
 * {
@@ -47,60 +51,217 @@ img {
   display: block;
 }
 
-button, input, select {
-  font-family: inherit;
-}
-
-/* ---------- LOGO ---------- */
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-}
-
-.logo-letters {
-  display: flex;
-  flex-direction: column;
-  line-height: 0.78;
-  font-family: var(--font-display);
-  font-weight: 900;
-  font-size: 20px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+/* ---------- ANNOUNCEMENT BAR ---------- */
+.announcement {
+  background: url('../495.jpg') center/cover no-repeat;
+  color: #fff;
   text-align: center;
-  justify-content: center;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 1px 1px 3px #000;
+  border-bottom: 1px solid var(--border);
 }
 
-.logo-letters span {
-  display: block;
-  height: 0.78em;
-  line-height: 0.78em;
-}
-
-.logo-cross {
-  width: 42px;
-  height: 42px;
-  position: relative;
-}
-
-.logo-cross svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* ---------- HEADER / NAV ---------- */
+/* ---------- HEADER & HORIZONTAL BANNER ---------- */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(0,0,0,0.92);
+  background: rgba(0, 0, 0, 0.95);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
-  padding: 14px 24px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.banner-strip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  overflow-x: auto;
+  flex: 1;
+  margin-right: 16px;
+  scrollbar-width: none;
+}
+
+.banner-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.banner-img-crop {
+  height: 48px;
+  width: 64px;
+  object-fit: cover;
+  border: 1px solid #222;
+  flex-shrink: 0;
+}
+
+/* Specific image cropping rules to remove watermarks/UI overlays */
+.crop-tiktok { object-position: center 30%; }
+.crop-fence { object-position: top center; }
+
+.cart-icon-btn {
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cart-icon-btn svg {
+  width: 28px;
+  height: 28px;
+  fill: var(--accent);
+}
+
+.cart-count {
+  position: absolute;
+  top: -4px;
+  right: -8px;
+  background: #fff;
+  color: #000;
+  font-size: 10px;
+  font-weight: 900;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- HERO SECTION ---------- */
+.hero {
+  padding: 60px 24px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.gothic-logo {
+  font-family: 'GothicCustom', 'Georgia', serif;
+  font-size: clamp(48px, 10vw, 84px);
+  text-transform: lowercase;
+  color: #fff;
+  letter-spacing: -1px;
+}
+
+.hero-cross-icon {
+  width: clamp(48px, 8vw, 72px);
+  height: clamp(48px, 8vw, 72px);
+}
+
+/* ---------- SHOP SECTION & SIGIL OVERLAY ---------- */
+.section {
+  padding: 48px 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 32px 20px;
+}
+
+.product-card {
+  position: relative;
+  cursor: pointer;
+  background: url('../487.webp') center/contain no-repeat; /* Red Sigil Background */
+  border: 1px solid #111;
+  padding: 12px;
+}
+
+.product-image-wrap {
+  position: relative;
+  aspect-ratio: 4/5;
+  background: rgba(17, 17, 17, 0.75);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.product-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-info {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 6px;
+}
+
+/* ---------- ABOUT & MAILING LIST ---------- */
+.about-section {
+  padding: 40px 24px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+.about-section h2 {
+  font-family: 'GothicCustom', serif;
+  font-size: 24px;
+  text-transform: lowercase;
+  color: var(--text-muted);
+}
+
+.mailing {
+  border-top: 1px solid var(--border);
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.mailing h2 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.mailing p {
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+
+.mailing-form {
+  display: flex;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.mailing-form input {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-right: none;
+  color: var(--text);
+  padding: 14px 16px;
+  font-size: 13px;
+}
+
+.mailing-form button {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  padding: 14px 24px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .nav-links {
