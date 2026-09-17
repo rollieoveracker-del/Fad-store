@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=999">
+  <link rel="stylesheet" href="style.css?v=10000">
 </head>
 <body style="background-color: #000; color: #fff; margin: 0; padding: 0;">
 
@@ -19,12 +19,12 @@
   <!-- HEADER BANNER STRIP -->
   <header class="site-header">
     <div class="banner-strip">
-      <img src="banner5.jpg?v=999" class="banner-img-crop" alt="art">
+      <img src="1789607273385.jpg" class="banner-img-crop" alt="art">
       <img src="banner1.jpg" class="banner-img-crop" alt="art">
       <img src="banner2.png" class="banner-img-crop" alt="art">
       <img src="banner3.jpg" class="banner-img-crop" alt="art">
       <img src="banner4.jpg" class="banner-img-crop" alt="art">
-      <img src="banner5.jpg" class="banner-img-crop" alt="art">
+      <img src="banner5.jpg?v=999" class="banner-img-crop" alt="art">
     </div>
 
     <a href="cart.html" class="cart-icon-btn" title="View Cart">
@@ -79,30 +79,29 @@
     <source src="video_to_mp3_0916_1814.mp3" type="audio/mpeg">
   </audio>
 
-  <script src="products.js?v=999"></script>
-  <script src="app.js?v=999"></script>
+  <script src="products.js?v=10000"></script>
+  <script src="app.js?v=10000"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       if (typeof renderProductGrid === 'function') {
         renderProductGrid("#product-grid");
       }
-
-      const audio = document.getElementById("bg-audio");
-      let audioStarted = false;
-
-      function startAudio() {
-        if (!audioStarted && audio) {
-          audio.play().then(() => {
-            audioStarted = true;
-            document.removeEventListener("touchstart", startAudio);
-            document.removeEventListener("click", startAudio);
-          }).catch(() => {});
-        }
-      }
-
-      document.addEventListener("touchstart", startAudio);
-      document.addEventListener("click", startAudio);
     });
+
+    // Unlocks background audio immediately on user tap/click
+    const audio = document.getElementById("bg-audio");
+    function unlockAudio() {
+      if (audio && audio.paused) {
+        audio.play().then(() => {
+          window.removeEventListener("touchstart", unlockAudio);
+          window.removeEventListener("click", unlockAudio);
+        }).catch(err => console.log("Autoplay blocked:", err));
+      }
+    }
+
+    window.addEventListener("touchstart", unlockAudio, { once: true });
+    window.addEventListener("click", unlockAudio, { once: true });
   </script>
 </body>
 </html>
+
