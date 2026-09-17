@@ -14,7 +14,7 @@ function renderProductGrid(containerSelector) {
     const imgPath = product.image || '';
 
     return `
-      <a href="cart.html?add=${product.id}" class="product-card ${isOutOfStock ? 'out-of-stock' : ''}" style="display:block; text-decoration:none; color:inherit;">
+      <a href="product.html?id=${product.id}" class="product-card ${isOutOfStock ? 'out-of-stock' : ''}" style="display:block; text-decoration:none; color:inherit;">
         <div class="product-image-wrap">
           ${imgPath ? `<img src="${imgPath}" alt="${product.title}" loading="lazy">` : ''}
           ${isOutOfStock ? '<span class="stock-badge">SOLD OUT</span>' : ''}
