@@ -114,7 +114,7 @@
         emailInput.value = "";
       }).catch(function (err) {
         console.error("EmailJS error:", err);
-        status.textContent = "Something went wrong — try again.";
+        status.textContent = "ERROR: " + (err && (err.text || err.message || JSON.stringify(err)));
         status.style.color = "#ff0000";
       }).finally(function () {
         btn.disabled = false;
