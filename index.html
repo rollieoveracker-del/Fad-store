@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body style="background-color: #000; color: #fff; margin: 0; padding: 0;">
 
@@ -19,12 +19,12 @@
   <!-- HEADER BANNER STRIP -->
   <header class="site-header">
     <div class="banner-strip">
-      <img src="1789607273385.jpg" class="banner-img-crop" alt="art">
-      <img src="F1AMJcSXoAAUIck.jpg" class="banner-img-crop" alt="art">
-      <img src="F5bkqzhakAAMYyb.png" class="banner-img-crop" alt="art">
-      <img src="FpcLxtCXsAMFHSI.JPG" class="banner-img-crop" alt="art">
-      <img src="GJ2T1DnW8AAc-1.png" class="banner-img-crop" alt="art">
-      <img src="Qisb56l02f03nVLeZhSM2_31hFoUsDUTGoqFTZwWC0FEWDAbQZM38wnfYgt4fWLP5bITJM15981KntKb17Ndge1SVm5rTx6_full.jpg" class="banner-img-crop" alt="art">
+      <img src="./1789607273385.jpg" class="banner-img-crop" alt="art">
+      <img src="./F1AMJcSXoAAUIck.jpg" class="banner-img-crop" alt="art">
+      <img src="./F5bkqzhakAAMYyb.png" class="banner-img-crop" alt="art">
+      <img src="./FpcLxtCXsAMFHSI.jpg" class="banner-img-crop" alt="art">
+      <img src="./GJ2T1DnW8AAc-1.png" class="banner-img-crop" alt="art">
+      <img src="./Qisb56l02f03nVLeZhSM2_31hFoUsDUTGoqFTZwWC0FEWDAbQZM38wnfYgt4fWLP5bITJM15981KntKb17Ndge1SVm5rTx6_full.jpg" class="banner-img-crop" alt="art">
     </div>
 
     <a href="cart.html" class="cart-icon-btn" title="View Cart">
@@ -80,14 +80,13 @@
   </audio>
 
   <script src="products.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       if (typeof renderProductGrid === 'function') {
         renderProductGrid("#product-grid");
       }
 
-      // RELIABLE FIRST-TAP AUDIO TRIGGER
       const audio = document.getElementById("bg-audio");
       let audioStarted = false;
 
