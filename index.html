@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=88888">
+  <link rel="stylesheet" href="style.css?v=99999">
 </head>
 <body style="background-color: #000; color: #fff; margin: 0; padding: 0;">
 
@@ -74,49 +74,35 @@
     <p>© 2026 fuck a Dress code &nbsp;|&nbsp; <a href="admin.html" style="color:#666; text-decoration:underline;">Admin Panel</a></p>
   </footer>
 
-  <!-- AUDIO PLAYER WITH FALLBACKS -->
-  <audio id="bg-audio" loop preload="auto" playsinline>
-    <source src="bg.mp3?v=1" type="audio/mpeg">
-    <source src="video_to_mp3_0916_1814.mp3?v=1" type="audio/mpeg">
+  <!-- AUDIO PLAYER -->
+  <audio id="bg-audio" loop preload="auto">
+    <source src="audio.mp3" type="audio/mpeg">
   </audio>
 
-  <script src="products.js?v=88888"></script>
-  <script src="app.js?v=88888"></script>
-
-  <!-- IMMUTABLE AUDIO TRIGGER -->
+  <script src="products.js?v=99999"></script>
+  <script src="app.js?v=99999"></script>
   <script>
-    (function() {
-      var audio = document.getElementById("bg-audio");
-      var played = false;
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof renderProductGrid === 'function') {
+        renderProductGrid("#product-grid");
+      }
 
-      function forcePlay() {
-        if (!played && audio) {
-          audio.volume = 1.0;
-          var promise = audio.play();
-          if (promise !== undefined) {
-            promise.then(function() {
-              played = true;
-              window.removeEventListener("click", forcePlay, true);
-              window.removeEventListener("touchstart", forcePlay, true);
-              window.removeEventListener("pointerdown", forcePlay, true);
-            }).catch(function(e) {
-              console.log("Audio waiting for user gesture:", e);
-            });
-          }
+      const audio = document.getElementById("bg-audio");
+      let audioStarted = false;
+
+      function startAudio() {
+        if (!audioStarted && audio) {
+          audio.play().then(() => {
+            audioStarted = true;
+            document.removeEventListener("touchstart", startAudio);
+            document.removeEventListener("click", startAudio);
+          }).catch(() => {});
         }
       }
 
-      window.addEventListener("click", forcePlay, true);
-      window.addEventListener("touchstart", forcePlay, true);
-      window.addEventListener("pointerdown", forcePlay, true);
-
-      document.addEventListener("DOMContentLoaded", function() {
-        if (typeof renderProductGrid === 'function') {
-          renderProductGrid("#product-grid");
-        }
-      });
-    })();
+      document.addEventListener("touchstart", startAudio);
+      document.addEventListener("click", startAudio);
+    });
   </script>
 </body>
 </html>
-
