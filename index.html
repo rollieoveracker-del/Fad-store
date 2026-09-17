@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css?v=999999">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body style="background-color: #000; color: #fff; margin: 0; padding: 0;">
 
@@ -64,10 +65,11 @@
   <section class="mailing" id="mailing">
     <h2>JOIN THE LIST FOR 15% OFF</h2>
     <p>or don't.... I don't care</p>
-    <form class="mailing-form" onsubmit="event.preventDefault();">
+    <form class="mailing-form" id="mailing-form">
       <input type="email" id="mailing-email" placeholder="your@email.com" required>
-      <button type="submit">JOIN</button>
+      <button type="submit" id="mailing-submit-btn">JOIN</button>
     </form>
+    <p id="mailing-status" style="font-size:12px; margin-top:10px; min-height:16px;"></p>
   </section>
 
   <footer class="site-footer">
@@ -81,6 +83,45 @@
 
   <script src="products.js?v=999999"></script>
   <script src="app.js?v=999999"></script>
+  <script>
+    // ---- EmailJS setup ----
+    (function () {
+      emailjs.init({ publicKey: "8ha80pGskhczzVYSr" });
+    })();
+
+    const MAILING_DISCOUNT_CODE = "WELCOME15";
+
+    document.getElementById("mailing-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const emailInput = document.getElementById("mailing-email");
+      const status = document.getElementById("mailing-status");
+      const btn = document.getElementById("mailing-submit-btn");
+      const email = emailInput.value.trim();
+
+      if (!email) return;
+
+      btn.disabled = true;
+      btn.textContent = "SENDING...";
+      status.textContent = "";
+
+      emailjs.send("service_g9wilff", "template_omzdynm", {
+        to_email: email,
+        discount_code: MAILING_DISCOUNT_CODE
+      }).then(function () {
+        status.textContent = "Check your email for your code.";
+        status.style.color = "#0f0";
+        emailInput.value = "";
+      }).catch(function (err) {
+        console.error("EmailJS error:", err);
+        status.textContent = "Something went wrong — try again.";
+        status.style.color = "#ff0000";
+      }).finally(function () {
+        btn.disabled = false;
+        btn.textContent = "JOIN";
+      });
+    });
+  </script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       if (typeof renderProductGrid === 'function') {
