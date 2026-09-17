@@ -7,9 +7,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=10000">
+  <link rel="stylesheet" href="style.css?v=20000">
 </head>
-<body style="background-color: #000; color: #fff; margin: 0; padding: 0;">
+<body onclick="playAudioOnce()" ontouchstart="playAudioOnce()" style="background-color: #000; color: #fff; margin: 0; padding: 0;">
 
   <!-- ANNOUNCEMENT BAR -->
   <div class="announcement">
@@ -79,28 +79,27 @@
     <source src="video_to_mp3_0916_1814.mp3" type="audio/mpeg">
   </audio>
 
-  <script src="products.js?v=10000"></script>
-  <script src="app.js?v=10000"></script>
+  <script src="products.js?v=20000"></script>
+  <script src="app.js?v=20000"></script>
   <script>
+    let hasPlayed = false;
+    function playAudioOnce() {
+      if (!hasPlayed) {
+        const audio = document.getElementById("bg-audio");
+        if (audio) {
+          audio.volume = 0.8;
+          audio.play().then(() => {
+            hasPlayed = true;
+          }).catch(err => console.log("Audio block:", err));
+        }
+      }
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       if (typeof renderProductGrid === 'function') {
         renderProductGrid("#product-grid");
       }
     });
-
-    // Unlocks background audio immediately on user tap/click
-    const audio = document.getElementById("bg-audio");
-    function unlockAudio() {
-      if (audio && audio.paused) {
-        audio.play().then(() => {
-          window.removeEventListener("touchstart", unlockAudio);
-          window.removeEventListener("click", unlockAudio);
-        }).catch(err => console.log("Autoplay blocked:", err));
-      }
-    }
-
-    window.addEventListener("touchstart", unlockAudio, { once: true });
-    window.addEventListener("click", unlockAudio, { once: true });
   </script>
 </body>
 </html>
