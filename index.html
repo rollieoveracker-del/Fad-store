@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>fad store</title>
-  <!-- Hosted Gothic Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
@@ -53,9 +52,7 @@
 
   <!-- SHOP SECTION -->
   <section class="section" id="shop">
-    <div class="product-grid" id="product-grid">
-      <!-- filled by JS -->
-    </div>
+    <div class="product-grid" id="product-grid"></div>
   </section>
 
   <!-- ABOUT SECTION -->
@@ -67,14 +64,14 @@
   <section class="mailing" id="mailing">
     <h2>JOIN THE LIST FOR 15% OFF</h2>
     <p>or don't.... I don't care</p>
-    <form class="mailing-form" onsubmit="handleMailingSubmit(event)">
+    <form class="mailing-form" onsubmit="event.preventDefault();">
       <input type="email" id="mailing-email" placeholder="your@email.com" required>
       <button type="submit">JOIN</button>
     </form>
   </section>
 
   <footer class="site-footer">
-    <p>© 2026 fuck a Dress code</p>
+    <p>© 2026 fuck a Dress code &nbsp;|&nbsp; <a href="admin.html" style="color:#444; text-decoration:underline;">Admin Panel</a></p>
   </footer>
 
   <!-- AUDIO PLAYER -->
@@ -90,7 +87,7 @@
         renderProductGrid("#product-grid");
       }
 
-      // FIRST CLICK AUDIO TRIGGER
+      // FIRST TOUCH/SCROLL AUDIO TRIGGER
       const audio = document.getElementById("bg-audio");
       let audioStarted = false;
 
@@ -98,15 +95,18 @@
         if (!audioStarted && audio) {
           audio.play().then(() => {
             audioStarted = true;
-            document.removeEventListener("click", startAudio);
-            document.removeEventListener("touchstart", startAudio);
+            window.removeEventListener("touchstart", startAudio);
+            window.removeEventListener("click", startAudio);
+            window.removeEventListener("scroll", startAudio);
           }).catch(() => {});
         }
       }
 
-      document.addEventListener("click", startAudio);
-      document.addEventListener("touchstart", startAudio);
+      window.addEventListener("touchstart", startAudio, { passive: true });
+      window.addEventListener("click", startAudio);
+      window.addEventListener("scroll", startAudio, { passive: true });
     });
   </script>
 </body>
 </html>
+
