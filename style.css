@@ -1,6 +1,5 @@
 /* ============================================
    FUCK A DRESS CODE
-   Dark / Punk / DIY aesthetic
    ============================================ */
 
 :root {
@@ -9,9 +8,7 @@
   --text: #ffffff;
   --text-muted: #888888;
   --accent: #ff0000;
-  --accent-dim: #cc0000;
   --border: #222222;
-  --success: #00ff66;
   --font-main: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-display: "Impact", "Arial Black", sans-serif;
 }
@@ -27,18 +24,13 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
+html, body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
   font-family: var(--font-main);
   font-size: 14px;
   line-height: 1.5;
   min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
 }
 
 a {
@@ -53,11 +45,11 @@ img {
 
 /* ---------- ANNOUNCEMENT BAR ---------- */
 .announcement {
-  background: url('../495.jpg') center/cover no-repeat;
-  color: #fff;
+  background: #111 url('../495.jpg') center/cover no-repeat;
+  color: #ffffff;
   text-align: center;
   padding: 10px 16px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -65,15 +57,14 @@ img {
   border-bottom: 1px solid var(--border);
 }
 
-/* ---------- HEADER & HORIZONTAL BANNER ---------- */
+/* ---------- HEADER & BANNER STRIP ---------- */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
   background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
-  padding: 8px 16px;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,26 +73,178 @@ img {
 .banner-strip {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   overflow-x: auto;
   flex: 1;
-  margin-right: 16px;
-  scrollbar-width: none;
-}
-
-.banner-strip::-webkit-scrollbar {
-  display: none;
+  margin-right: 12px;
 }
 
 .banner-img-crop {
-  height: 48px;
-  width: 64px;
+  height: 40px;
+  width: 50px;
   object-fit: cover;
   border: 1px solid #222;
   flex-shrink: 0;
 }
 
-/* Specific image cropping rules to remove watermarks/UI overlays */
+.crop-tiktok { object-position: center 30%; }
+.crop-fence { object-position: top center; }
+
+.cart-icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+}
+
+.cart-count {
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  background: #ffffff;
+  color: #000000;
+  font-size: 10px;
+  font-weight: 900;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- HERO ---------- */
+.hero {
+  padding: 40px 20px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.gothic-logo {
+  font-family: 'GothicCustom', 'Georgia', serif;
+  font-size: 64px;
+  text-transform: lowercase;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1;
+}
+
+/* ---------- PRODUCT GRID & SIGIL ---------- */
+.section {
+  padding: 32px 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px 16px;
+}
+
+.product-card {
+  position: relative;
+  background: #0a0a0a url('../487.webp') center/contain no-repeat;
+  border: 1px solid #222;
+  padding: 10px;
+}
+
+.product-image-wrap {
+  position: relative;
+  aspect-ratio: 4/5;
+  background: rgba(17, 17, 17, 0.85);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.product-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-info {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 8px;
+}
+
+/* ---------- ABOUT & MAILING LIST ---------- */
+.about-section {
+  padding: 40px 20px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+.about-section h2 {
+  font-family: 'GothicCustom', serif;
+  font-size: 22px;
+  text-transform: lowercase;
+  color: #888888;
+}
+
+.mailing {
+  border-top: 1px solid var(--border);
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.mailing h2 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.mailing p {
+  color: #888888;
+  margin-bottom: 20px;
+  font-size: 12px;
+}
+
+.mailing-form {
+  display: flex;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.mailing-form input {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: #ffffff;
+  padding: 10px 12px;
+  font-size: 12px;
+}
+
+.mailing-form button {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #ffffff;
+  padding: 10px 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px;
+  text-align: center;
+  font-size: 11px;
+  color: #888888;
+}
 .crop-tiktok { object-position: center 30%; }
 .crop-fence { object-position: top center; }
 
