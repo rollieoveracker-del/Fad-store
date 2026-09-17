@@ -3,130 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>fuck a Dress code</title>
-  <meta name="description" content="Hand-painted DIY shirts. Edgy. Punk. No rules.">
-  <link rel="stylesheet" href="style.css">
+  <title>fad store</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- Announcement -->
+  <!-- ANNOUNCEMENT BAR WITH FLESH TEXTURE -->
   <div class="announcement">
-    Spend $40 → free patch · Spend $75 → free shipping + mystery shirt
+    SPEND $40 → FREE PATCH &nbsp;|&nbsp; SPEND $75 → FREE SHIPPING + MYSTERY SHIRT
   </div>
 
-  <!-- Header -->
+  <!-- HEADER WITH HORIZONTAL ART BANNER & RED CART ICON -->
   <header class="site-header">
-    <a href="index.html" class="logo">
-      <div class="logo-letters">
-        <span>F</span>
-        <span>A</span>
-        <span>D</span>
-      </div>
-      <div class="logo-cross">
-        <!-- Cross with X through it (Bad Religion inspired) -->
+    <div class="banner-strip">
+      <img src="504.jpg" class="banner-img-crop" alt="art">
+      <img src="503.jpg" class="banner-img-crop" alt="art">
+      <img src="507.jpg" class="banner-img-crop" alt="art">
+      <img src="501.png" class="banner-img-crop" alt="art">
+      <img src="502.png" class="banner-img-crop" alt="art">
+      <img src="506.png" class="banner-img-crop crop-tiktok" alt="art">
+      <img src="508.jpg" class="banner-img-crop crop-fence" alt="art">
+    </div>
+
+    <a href="cart.html" class="cart-icon-btn" title="View Cart">
+      <svg viewBox="0 0 24 24">
+        <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+      </svg>
+      <span class="cart-count" style="display:none;">0</span>
+    </a>
+  </header>
+
+  <!-- HERO SECTION WITH CENTERING & GOTHIC FAD LOGO -->
+  <section class="hero">
+    <div class="hero-brand">
+      <h1 class="gothic-logo">fad</h1>
+      <div class="hero-cross-icon">
         <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Cross -->
           <rect x="42" y="10" width="16" height="80" fill="#fff"/>
           <rect x="20" y="32" width="60" height="16" fill="#fff"/>
-          <!-- Red circle + slash (X / ban style) -->
           <circle cx="50" cy="50" r="38" stroke="#ff0000" stroke-width="8" fill="none"/>
           <line x1="22" y1="22" x2="78" y2="78" stroke="#ff0000" stroke-width="8"/>
         </svg>
       </div>
-    </a>
-
-    <nav>
-      <ul class="nav-links">
-        <li><a href="index.html" class="active">Shop</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="cart.html" class="cart-link">Cart <span class="cart-count" style="display:none;">0</span></a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <!-- Hero -->
-  <section class="hero">
-    <h1>fuck a Dress code</h1>
-    <p>Hand-painted one-of-ones. DIY. Punk. No rules. Made to be worn hard.</p>
-    <a href="#shop" class="btn btn-accent">Shop the drop</a>
+    </div>
   </section>
 
-  <!-- Shop -->
+  <!-- SHOP SECTION -->
   <section class="section" id="shop">
-    <h2 class="section-title">All Shirts</h2>
     <div class="product-grid" id="product-grid">
       <!-- filled by JS -->
     </div>
   </section>
 
-  <!-- About -->
-  <section class="section" id="about" style="border-top:1px solid var(--border); text-align:center; max-width:600px;">
-    <h2 class="section-title">About</h2>
-    <p style="color:var(--text-muted); line-height:1.7;">
-      fuck a Dress code is hand-painted DIY shirts with pure edgy/punk energy. 
-      Every piece is made by hand — no mass production, no polish, just raw paint and attitude. 
-      Wear it until it falls apart.
-    </p>
+  <!-- ABOUT SECTION -->
+  <section class="about-section" id="about">
+    <h2>bad clothes for bad people</h2>
   </section>
 
-  <!-- Mailing List -->
+  <!-- MAILING LIST SECTION WITH AUTOMATED DISCOUNT CODE -->
   <section class="mailing" id="mailing">
-    <h2>Join the list</h2>
-    <p>New drops, one-offs, and zero spam.</p>
+    <h2>JOIN THE LIST FOR 15% OFF</h2>
+    <p>or don't.... I don't care</p>
     <form class="mailing-form" onsubmit="handleMailingSubmit(event)">
       <input type="email" id="mailing-email" placeholder="your@email.com" required>
-      <button type="submit">Join</button>
+      <button type="submit">JOIN</button>
     </form>
   </section>
 
-  <!-- Footer -->
   <footer class="site-footer">
-    <div>
-      <a href="index.html">Shop</a>
-      <a href="cart.html">Cart</a>
-      <a href="admin.html">Admin</a>
-    </div>
-    <p style="margin-top:16px;">© 2026 fuck a Dress code · Hand-painted · No rules</p>
+    <p>© 2026 fuck a Dress code</p>
   </footer>
 
-  <!-- Product Modal -->
-  <div class="modal-overlay" id="product-modal">
-    <div class="modal">
-      <button class="modal-close" onclick="closeProductModal()">&times;</button>
-      <div class="modal-image">
-        <img id="modal-image" src="" alt="">
-      </div>
-      <div class="modal-details">
-        <h2 id="modal-name"></h2>
-        <div class="modal-price" id="modal-price"></div>
-        <p class="modal-desc" id="modal-desc"></p>
+  <!-- HIDDEN AUDIO PLAYER FOR FIRST-CLICK TRIGGER -->
+  <audio id="bg-audio" loop preload="auto">
+    <source src="track.mp3" type="audio/mpeg">
+  </audio>
 
-        <div class="size-selector">
-          <label>Size</label>
-          <div class="size-options" id="size-options"></div>
-        </div>
-
-        <div class="qty-row">
-          <label>Qty</label>
-          <div class="qty-controls">
-            <button onclick="changeQty(-1)">−</button>
-            <span id="qty-display">1</span>
-            <button onclick="changeQty(1)">+</button>
-          </div>
-        </div>
-
-        <button class="btn btn-solid add-to-cart-btn" id="add-to-cart-btn" onclick="handleAddToCart()">
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <script src="products.js"></script>
-  <script src="app.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/app.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       renderProductGrid("#product-grid");
+
+      // FIRST-CLICK AUDIO TRIGGER
+      const audio = document.getElementById("bg-audio");
+      let audioStarted = false;
+
+      function startAudio() {
+        if (!audioStarted && audio) {
+          audio.play().then(() => {
+            audioStarted = true;
+            document.removeEventListener("click", startAudio);
+            document.removeEventListener("touchstart", startAudio);
+          }).catch(() => {});
+        }
+      }
+
+      document.addEventListener("click", startAudio);
+      document.addEventListener("touchstart", startAudio);
     });
   </script>
 </body>
