@@ -84,5 +84,6 @@ function saveProducts(products) {
 const DISCOUNT_CODES = {
   "PUNK10": { type: "percent", value: 10, description: "10% off" },
   "DRESSCODE": { type: "fixed", value: 15, description: "$15 off" },
+  "WELCOME15": { type: "percent", value: 15, description: "15% off — mailing list" },
   "FREE PATCH": { type: "free_item", value: "patch", description: "Free patch" }
 };
