@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=100">
 </head>
 <body style="background-color: #000; color: #fff; margin: 0; padding: 0;">
 
@@ -18,7 +18,7 @@
 
   <main class="section" style="max-width: 800px; padding: 20px; margin: 0 auto;">
     <div id="product-detail-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
-      <!-- Populated by script below -->
+      <!-- Filled dynamically -->
     </div>
   </main>
 
@@ -26,63 +26,78 @@
     <p>© 2026 fuck a Dress code &nbsp;|&nbsp; <a href="admin.html" style="color:#666;">Admin</a></p>
   </footer>
 
-  <script src="products.js"></script>
+  <script src="products.js?v=100"></script>
   <script>
+    let currentProduct = null;
+    let selectedSize = 'M';
+
     document.addEventListener("DOMContentLoaded", () => {
       const params = new URLSearchParams(window.location.search);
       const productId = params.get('id');
       const products = JSON.parse(localStorage.getItem('fad_products')) || window.productsData || [];
-      const product = products.find(p => p.id === productId) || products[0];
+      
+      currentProduct = products.find(p => String(p.id) === String(productId)) || products[0];
 
       const container = document.getElementById('product-detail-container');
-      if (!product) {
+      if (!currentProduct) {
         container.innerHTML = `<p style="color:#888;">Product not found.</p>`;
         return;
       }
 
       container.innerHTML = `
         <div class="product-card" style="background:#0a0a0a url('Halo_of_the_Sun.webp') center/contain no-repeat; padding:15px; border:1px solid #222;">
-          <div class="product-image-wrap" style="aspect-ratio:4/5; background:rgba(17,17,17,0.85);">
-            <img src="${product.image || ''}" alt="${product.title}" style="width:100%; height:100%; object-fit:cover;">
+          <div class="product-image-wrap" style="aspect-ratio:4/5; background:rgba(17,17,17,0.85); display:flex; align-items:center; justify-content:center;">
+            ${currentProduct.image ? `<img src="${currentProduct.image}" alt="${currentProduct.title}" style="width:100%; height:100%; object-fit:cover;">` : ''}
           </div>
         </div>
 
         <div style="display:flex; flex-direction:column; justify-content:center;">
-          <h1 style="font-family: var(--font-display); font-size:28px; text-transform:uppercase; margin-bottom:8px;">${product.title}</h1>
-          <p style="color:#ff0000; font-size:22px; font-weight:bold; margin-bottom:16px;">$${product.price || '30'}</p>
+          <h1 style="font-family: var(--font-display); font-size:28px; text-transform:uppercase; margin-bottom:8px;">${currentProduct.title}</h1>
+          <p style="color:#ff0000; font-size:22px; font-weight:bold; margin-bottom:16px;">$${currentProduct.price || '30'}</p>
           
           <p style="color:#aaa; font-size:13px; line-height:1.6; margin-bottom:24px;">
-            ${product.description || 'Hand-painted DIY garment. 100% heavy cotton.'}
+            ${currentProduct.description || 'Hand-painted DIY garment. 100% heavy cotton.'}
           </p>
 
           <div style="margin-bottom:24px;">
             <label style="display:block; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:8px;">Select Size</label>
             <div style="display:flex; gap:10px;">
               ${['S', 'M', 'L', 'XL', '2XL'].map(size => `
-                <button type="button" class="size-btn" onclick="selectSize(this)" style="background:#111; color:#fff; border:1px solid #333; padding:10px 14px; font-weight:bold; cursor:pointer;">${size}</button>
+                <button type="button" class="size-btn" onclick="selectSize(this, '${size}')" style="background:${size === 'M' ? '#ff0000' : '#111'}; color:#fff; border:1px solid ${size === 'M' ? '#ff0000' : '#333'}; padding:10px 14px; font-weight:bold; cursor:pointer;">${size}</button>
               `).join('')}
             </div>
           </div>
 
-          <button onclick="addToCart('${product.id}')" style="width:100%; background:#ff0000; color:#fff; border:none; padding:16px; font-weight:bold; letter-spacing:1px; cursor:pointer;">ADD TO CART</button>
+          <button onclick="handleAddToCart()" style="width:100%; background:#ff0000; color:#fff; border:none; padding:16px; font-weight:bold; letter-spacing:1px; cursor:pointer;">ADD TO CART</button>
         </div>
       `;
     });
 
-    let selectedSize = 'M';
-    function selectSize(btn) {
-      document.querySelectorAll('.size-btn').forEach(b => b.style.borderColor = '#333');
+    function selectSize(btn, size) {
+      document.querySelectorAll('.size-btn').forEach(b => {
+        b.style.borderColor = '#333';
+        b.style.background = '#111';
+      });
       btn.style.borderColor = '#ff0000';
-      selectedSize = btn.innerText;
+      btn.style.background = '#ff0000';
+      selectedSize = size;
     }
 
-    function addToCart(productId) {
+    function handleAddToCart() {
+      if (!currentProduct) return;
+      
       let cart = JSON.parse(localStorage.getItem('fad_cart')) || [];
-      cart.push({ id: productId, size: selectedSize });
+      cart.push({
+        id: currentProduct.id,
+        title: currentProduct.title,
+        price: currentProduct.price || 30,
+        image: currentProduct.image || '',
+        size: selectedSize
+      });
+      
       localStorage.setItem('fad_cart', JSON.stringify(cart));
       window.location.href = 'cart.html';
     }
   </script>
 </body>
 </html>
-
