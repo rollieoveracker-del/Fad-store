@@ -1,6 +1,4 @@
-</html>
-
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -9,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=40000">
+  <link rel="stylesheet" href="style.css?v=50000">
 </head>
 <body style="background-color: #000; color: #fff; margin: 0; padding: 0;">
 
@@ -81,28 +79,31 @@
     <source src="video_to_mp3_0916_1814.mp3" type="audio/mpeg">
   </audio>
 
-  <script src="products.js?v=40000"></script>
-  <script src="app.js?v=40000"></script>
+  <script src="products.js?v=50000"></script>
+  <script src="app.js?v=50000"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       if (typeof renderProductGrid === 'function') {
         renderProductGrid("#product-grid");
       }
-    });
 
-    // Global listener: plays audio on first click/tap anywhere on screen
-    function startAudio() {
       const audio = document.getElementById("bg-audio");
-      if (audio && audio.paused) {
-        audio.play().then(() => {
-          document.removeEventListener("click", startAudio);
-          document.removeEventListener("touchstart", startAudio);
-        }).catch(() => {});
-      }
-    }
+      let audioStarted = false;
 
-    document.addEventListener("click", startAudio);
-    document.addEventListener("touchstart", startAudio);
+      function startAudio() {
+        if (!audioStarted && audio) {
+          audio.play().then(() => {
+            audioStarted = true;
+            document.removeEventListener("touchstart", startAudio);
+            document.removeEventListener("click", startAudio);
+          }).catch(() => {});
+        }
+      }
+
+      document.addEventListener("touchstart", startAudio);
+      document.addEventListener("click", startAudio);
+    });
   </script>
 </body>
 </html>
+
