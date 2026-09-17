@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>fad store - product</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body style="background-color: #000; color: #fff; margin: 0; padding: 0;">
+
+  <header class="site-header" style="padding: 16px;">
+    <a href="index.html" class="gothic-logo" style="font-size:36px;">fad</a>
+    <a href="index.html" style="color:#aaa; font-size:12px; text-transform:uppercase;">← Back to Shop</a>
+  </header>
+
+  <main class="section" style="max-width: 800px; padding: 20px; margin: 0 auto;">
+    <div id="product-detail-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+      <!-- Populated by script below -->
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 fuck a Dress code &nbsp;|&nbsp; <a href="admin.html" style="color:#666;">Admin</a></p>
+  </footer>
+
+  <script src="products.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const params = new URLSearchParams(window.location.search);
+      const productId = params.get('id');
+      const products = JSON.parse(localStorage.getItem('fad_products')) || window.productsData || [];
+      const product = products.find(p => p.id === productId) || products[0];
+
+      const container = document.getElementById('product-detail-container');
+      if (!product) {
+        container.innerHTML = `<p style="color:#888;">Product not found.</p>`;
+        return;
+      }
+
+      container.innerHTML = `
+        <div class="product-card" style="background:#0a0a0a url('Halo_of_the_Sun.webp') center/contain no-repeat; padding:15px; border:1px solid #222;">
+          <div class="product-image-wrap" style="aspect-ratio:4/5; background:rgba(17,17,17,0.85);">
+            <img src="${product.image || ''}" alt="${product.title}" style="width:100%; height:100%; object-fit:cover;">
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <h1 style="font-family: var(--font-display); font-size:28px; text-transform:uppercase; margin-bottom:8px;">${product.title}</h1>
+          <p style="color:#ff0000; font-size:22px; font-weight:bold; margin-bottom:16px;">$${product.price || '30'}</p>
+          
+          <p style="color:#aaa; font-size:13px; line-height:1.6; margin-bottom:24px;">
+            ${product.description || 'Hand-painted DIY garment. 100% heavy cotton.'}
+          </p>
+
+          <div style="margin-bottom:24px;">
+            <label style="display:block; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:8px;">Select Size</label>
+            <div style="display:flex; gap:10px;">
+              ${['S', 'M', 'L', 'XL', '2XL'].map(size => `
+                <button type="button" class="size-btn" onclick="selectSize(this)" style="background:#111; color:#fff; border:1px solid #333; padding:10px 14px; font-weight:bold; cursor:pointer;">${size}</button>
+              `).join('')}
+            </div>
+          </div>
+
+          <button onclick="addToCart('${product.id}')" style="width:100%; background:#ff0000; color:#fff; border:none; padding:16px; font-weight:bold; letter-spacing:1px; cursor:pointer;">ADD TO CART</button>
+        </div>
+      `;
+    });
+
+    let selectedSize = 'M';
+    function selectSize(btn) {
+      document.querySelectorAll('.size-btn').forEach(b => b.style.borderColor = '#333');
+      btn.style.borderColor = '#ff0000';
+      selectedSize = btn.innerText;
+    }
+
+    function addToCart(productId) {
+      let cart = JSON.parse(localStorage.getItem('fad_cart')) || [];
+      cart.push({ id: productId, size: selectedSize });
+      localStorage.setItem('fad_cart', JSON.stringify(cart));
+      window.location.href = 'cart.html';
+    }
+  </script>
+</body>
+</html>
+
