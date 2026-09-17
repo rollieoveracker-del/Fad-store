@@ -271,21 +271,15 @@ function handleAddToCart() {
 // ---------- MAILING LIST ----------
 function handleMailingSubmit(e) {
   e.preventDefault();
-  const email = document.getElementById("mailing-email").value.trim();
+  const emailInput = document.getElementById("mailing-email");
+  const email = emailInput ? emailInput.value.trim() : "";
   if (!email) return;
 
-  // Store locally for now. Later connect to Formspree / Mailchimp / Netlify Forms
-  let list = [];
-  try {
-    list = JSON.parse(localStorage.getItem("fad_mailing") || "[]");
-  } catch {}
-  if (!list.includes(email)) {
-    list.push(email);
-    localStorage.setItem("fad_mailing", JSON.stringify(list));
-  }
+  // Auto-apply 15% off discount code to local session
+  applyDiscountCode("DRESSCODE");
 
-  alert("You're on the list. No spam, just drops.");
-  e.target.reset();
+  alert("15% OFF DISCOUNT APPLIED TO YOUR CART. CODE: DRESSCODE");
+  if (e.target) e.target.reset();
 }
 
 // ---------- INIT ----------
