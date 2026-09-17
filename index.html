@@ -112,7 +112,7 @@
         status.textContent = "Check your email for your code.";
         status.style.color = "#0f0";
         emailInput.value = "";
-      }).catch(function (err) {
+            }).catch(function (err) {
         console.error("EmailJS error:", err);
         status.textContent = "ERROR: " + (err && (err.text || err.message || JSON.stringify(err)));
         status.style.color = "#ff0000";
