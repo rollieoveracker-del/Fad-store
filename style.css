@@ -2,6 +2,8 @@
    FUCK A DRESS CODE
    ============================================ */
 
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
+
 :root {
   --bg: #000000;
   --bg-elevated: #0a0a0a;
@@ -11,7 +13,7 @@
   --border: #222222;
   --font-main: "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-display: "Impact", "Arial Black", sans-serif;
-  --font-gothic: 'UnifrakturMaguntia', 'Georgia', serif;
+  --font-gothic: 'UnifrakturMaguntia', cursive, serif;
 }
 
 * {
@@ -73,7 +75,6 @@ img {
   overflow-x: auto;
   flex: 1;
   margin-right: 12px;
-  min-height: 42px;
 }
 
 .banner-img-crop {
@@ -127,10 +128,10 @@ img {
 }
 
 .gothic-logo {
-  font-family: var(--font-gothic) !important;
-  font-size: 72px;
+  font-family: 'UnifrakturMaguntia', cursive !important;
+  font-size: 72px !important;
   text-transform: lowercase;
-  color: #ffffff;
+  color: #ffffff !important;
   margin: 0;
   line-height: 1;
   font-weight: normal;
@@ -162,9 +163,6 @@ img {
   background: rgba(17, 17, 17, 0.85);
   overflow: hidden;
   margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .product-image-wrap img {
@@ -187,8 +185,8 @@ img {
 }
 
 .about-section h2 {
-  font-family: var(--font-gothic) !important;
-  font-size: 28px;
+  font-family: 'UnifrakturMaguntia', cursive !important;
+  font-size: 28px !important;
   text-transform: lowercase;
   color: #888888;
   font-weight: normal;
