@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -81,8 +81,9 @@
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
-  <script src="products.js?v=999999"></script>
-  <script src="app.js?v=999999"></script>
+  <!-- app.js pulls in products.js itself (ES module import) -->
+  <script type="module" src="app.js"></script>
+
   <script>
     // ---- EmailJS setup ----
     (function () {
@@ -112,9 +113,9 @@
         status.textContent = "Check your email for your code.";
         status.style.color = "#0f0";
         emailInput.value = "";
-            }).catch(function (err) {
+      }).catch(function (err) {
         console.error("EmailJS error:", err);
-        status.textContent = "ERROR: " + (err && (err.text || err.message || JSON.stringify(err)));
+        status.textContent = "Something went wrong — try again.";
         status.style.color = "#ff0000";
       }).finally(function () {
         btn.disabled = false;
