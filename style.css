@@ -174,7 +174,7 @@ img {
   drop-shadow(0 0 12px rgba(255, 0, 0, 0.3))
   drop-shadow(0 0 24px rgba(255, 0, 0, 0.2))
   drop-shadow(0 0 45px rgba(255, 0, 0, 0.12));
-
+}
 .product-info {
   text-align: center;
   background: transparent;
