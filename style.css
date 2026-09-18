@@ -260,7 +260,7 @@ img {
   background-size: cover;
   background-attachment: fixed;
   background-repeat: no-repeat;
-  filter: brightness(0.22) contrast(1.15) grayscale(0.15);
+  filter: brightness(0.55) contrast(1.15) grayscale(0.15);
   z-index: 0;
   pointer-events: none;
 }
