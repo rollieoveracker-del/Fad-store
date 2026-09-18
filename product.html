@@ -101,6 +101,11 @@
     function handleAddToCart() {
       if (!currentProduct) return;
 
+      // Extra safety net: this click is a real user gesture, so use it to
+      // make sure the music is running even if the page-load resume attempt
+      // got blocked by the browser's autoplay policy.
+      if (window.__fadAudio) window.__fadAudio.play().catch(() => {});
+
       let cart = JSON.parse(localStorage.getItem('fad_cart')) || [];
       cart.push({
         id: currentProduct.id,
@@ -116,5 +121,6 @@
 
     document.addEventListener("DOMContentLoaded", init);
   </script>
+  <script src="audio-persist.js"></script>
 </body>
 </html>
