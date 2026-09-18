@@ -1,27 +1,16 @@
 // ============================================
-// ADMIN PANEL
-// Password: fadadmin (change it below)
+// ADMIN PANEL — Firebase Auth + Firestore
+// Log in with the email/password you created in
+// Firebase Console -> Authentication -> Users
 // ============================================
 
-const ADMIN_PASSWORD = "fadadmin"; // ← change this to whatever you want
-const AUTH_KEY = "fad_admin_auth";
-
-function isAuthenticated() {
-  return sessionStorage.getItem(AUTH_KEY) === "true";
-}
-
-function login(password) {
-  if (password === ADMIN_PASSWORD) {
-    sessionStorage.setItem(AUTH_KEY, "true");
-    return true;
-  }
-  return false;
-}
-
-function logout() {
-  sessionStorage.removeItem(AUTH_KEY);
-  location.reload();
-}
+import { auth } from "./firebase-config.js";
+import {
+  signInWithEmailAndPassword, onAuthStateChanged, signOut
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+import {
+  getProducts, saveProduct, deleteProductById, seedDefaultProducts
+} from "./products.js";
 
 function showLogin() {
   document.getElementById("admin-login").style.display = "block";
@@ -34,87 +23,108 @@ function showPanel() {
   renderAdminProductList();
 }
 
-function handleLogin(e) {
+async function handleLogin(e) {
   e.preventDefault();
+  const email = document.getElementById("admin-email").value;
   const pw = document.getElementById("admin-password").value;
-  if (login(pw)) {
-    showPanel();
-  } else {
-    alert("Wrong password.");
+  try {
+    await signInWithEmailAndPassword(auth, email, pw);
+  } catch (err) {
+    console.error(err);
+    alert("Login failed: " + err.message);
   }
 }
 
-function renderAdminProductList() {
-  const products = getProducts().filter(p => !p.isGift);
+async function logout() {
+  await signOut(auth);
+  location.reload();
+}
+
+async function renderAdminProductList() {
   const list = document.getElementById("admin-product-list");
   if (!list) return;
+  list.innerHTML = `<p style="color:var(--text-muted);">Loading...</p>`;
+
+  let products = [];
+  try {
+    products = await getProducts();
+  } catch (e) {
+    console.error(e);
+    list.innerHTML = `<p style="color:var(--accent);">Failed to load products.</p>`;
+    return;
+  }
+
+  products = products.filter(p => !p.isGift);
 
   list.innerHTML = products.map(p => {
-    const totalStock = Object.values(p.stock).reduce((a, b) => a + b, 0);
+    const totalStock = Object.values(p.stock || {}).reduce((a, b) => a + b, 0);
     return `
       <div class="admin-product-item">
         <div>
-          <h3>${p.name}</h3>
+          <h3>${p.title}</h3>
           <div style="font-size:12px;color:var(--text-muted);">$${p.price} · Stock: ${totalStock} · ${p.soldOut ? "SOLD OUT" : "Available"}</div>
         </div>
         <div class="admin-actions">
-          <button onclick="editProduct('${p.id}')">Edit</button>
-          <button onclick="toggleSoldOut('${p.id}')">${p.soldOut ? "Restock" : "Mark Sold Out"}</button>
-          <button onclick="deleteProduct('${p.id}')" style="color:var(--accent);">Delete</button>
+          <button data-edit="${p.id}">Edit</button>
+          <button data-toggle="${p.id}">${p.soldOut ? "Restock" : "Mark Sold Out"}</button>
+          <button data-delete="${p.id}" style="color:var(--accent);">Delete</button>
         </div>
       </div>
     `;
   }).join("") || "<p style='color:var(--text-muted);'>No products yet.</p>";
+
+  list.querySelectorAll('[data-edit]').forEach(b => b.addEventListener('click', () => editProduct(b.dataset.edit)));
+  list.querySelectorAll('[data-toggle]').forEach(b => b.addEventListener('click', () => toggleSoldOut(b.dataset.toggle)));
+  list.querySelectorAll('[data-delete]').forEach(b => b.addEventListener('click', () => deleteProduct(b.dataset.delete)));
 }
 
-function toggleSoldOut(id) {
-  const products = getProducts();
+async function toggleSoldOut(id) {
+  const products = await getProducts();
   const p = products.find(x => x.id === id);
   if (p) {
     p.soldOut = !p.soldOut;
-    saveProducts(products);
+    await saveProduct(p);
     renderAdminProductList();
   }
 }
 
-function deleteProduct(id) {
+async function deleteProduct(id) {
   if (!confirm("Delete this product permanently?")) return;
-  let products = getProducts().filter(p => p.id !== id);
-  saveProducts(products);
+  await deleteProductById(id);
   renderAdminProductList();
 }
 
-function editProduct(id) {
-  const products = getProducts();
+async function editProduct(id) {
+  const products = await getProducts();
   const p = products.find(x => x.id === id);
   if (!p) return;
 
   document.getElementById("form-id").value = p.id;
-  document.getElementById("form-name").value = p.name;
+  document.getElementById("form-name").value = p.title;
   document.getElementById("form-price").value = p.price;
   document.getElementById("form-desc").value = p.description;
   document.getElementById("form-image").value = p.image;
-  document.getElementById("form-sizes").value = p.sizes.join(", ");
-  document.getElementById("form-stock").value = Object.entries(p.stock).map(([s, q]) => `${s}:${q}`).join(", ");
-  document.getElementById("form-featured").checked = p.featured;
+  document.getElementById("form-sizes").value = (p.sizes || []).join(", ");
+  document.getElementById("form-stock").value = Object.entries(p.stock || {}).map(([s, q]) => `${s}:${q}`).join(", ");
+  document.getElementById("form-featured").checked = !!p.featured;
 
   document.getElementById("form-title").textContent = "Edit Product";
   document.getElementById("product-form").scrollIntoView({ behavior: "smooth" });
 }
 
-function handleProductForm(e) {
+async function handleProductForm(e) {
   e.preventDefault();
 
-  const id = document.getElementById("form-id").value || ("diy-" + Date.now());
-  const name = document.getElementById("form-name").value.trim();
+  const id = document.getElementById("form-id").value || undefined;
+  const title = document.getElementById("form-name").value.trim();
   const price = parseFloat(document.getElementById("form-price").value);
   const description = document.getElementById("form-desc").value.trim();
-  const image = document.getElementById("form-image").value.trim() || "https://placehold.co/600x750/111/fff?text=" + encodeURIComponent(name);
+  const image = document.getElementById("form-image").value.trim() || "https://placehold.co/600x750/111/fff?text=" + encodeURIComponent(title);
   const sizesRaw = document.getElementById("form-sizes").value.trim();
   const stockRaw = document.getElementById("form-stock").value.trim();
   const featured = document.getElementById("form-featured").checked;
 
-  if (!name || isNaN(price)) {
+  if (!title || isNaN(price)) {
     alert("Name and price are required.");
     return;
   }
@@ -130,12 +140,9 @@ function handleProductForm(e) {
     sizes.forEach(s => stock[s] = 1);
   }
 
-  let products = getProducts();
-  const existingIdx = products.findIndex(p => p.id === id);
-
   const product = {
     id,
-    name,
+    title,
     price,
     originalPrice: null,
     description,
@@ -148,16 +155,15 @@ function handleProductForm(e) {
     soldOut: false
   };
 
-  if (existingIdx >= 0) {
-    products[existingIdx] = { ...products[existingIdx], ...product };
-  } else {
-    products.unshift(product);
+  try {
+    await saveProduct(product);
+    alert("Product saved.");
+    resetForm();
+    renderAdminProductList();
+  } catch (err) {
+    console.error(err);
+    alert("Failed to save: " + err.message);
   }
-
-  saveProducts(products);
-  alert("Product saved.");
-  resetForm();
-  renderAdminProductList();
 }
 
 function resetForm() {
@@ -166,15 +172,38 @@ function resetForm() {
   document.getElementById("form-title").textContent = "Add New Shirt";
 }
 
-function resetToDefaults() {
-  if (!confirm("This will wipe all custom products and restore the original catalog. Continue?")) return;
-  localStorage.removeItem("fad_products");
-  renderAdminProductList();
-  alert("Reset to defaults.");
+async function seedCatalog() {
+  if (!confirm("This adds the starter catalog into the live database (won't touch your custom items). Continue?")) return;
+  try {
+    await seedDefaultProducts();
+    renderAdminProductList();
+    alert("Starter catalog added.");
+  } catch (err) {
+    console.error(err);
+    alert("Failed: " + err.message);
+  }
 }
 
+// Wire up static elements once the DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
-  if (isAuthenticated()) {
+  const loginForm = document.getElementById("admin-login-form");
+  if (loginForm) loginForm.addEventListener("submit", handleLogin);
+
+  const productForm = document.getElementById("product-form");
+  if (productForm) productForm.addEventListener("submit", handleProductForm);
+
+  const logoutBtn = document.getElementById("logout-btn");
+  if (logoutBtn) logoutBtn.addEventListener("click", logout);
+
+  const clearBtn = document.getElementById("clear-form-btn");
+  if (clearBtn) clearBtn.addEventListener("click", resetForm);
+
+  const seedBtn = document.getElementById("seed-catalog-btn");
+  if (seedBtn) seedBtn.addEventListener("click", seedCatalog);
+});
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
     showPanel();
   } else {
     showLogin();
