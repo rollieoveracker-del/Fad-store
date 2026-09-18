@@ -152,7 +152,7 @@ img {
 
 .product-card {
   position: relative;
-  background: #0a0a0a url('Halo_of_the_Sun.webp') center/contain no-repeat;
+  background: rgba(10, 10, 10, 0.35);
   border: 1px solid #222;
   padding: 10px;
 }
