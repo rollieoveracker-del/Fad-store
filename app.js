@@ -1,8 +1,21 @@
-function renderProductGrid(containerSelector) {
+import { getProducts } from "./products.js";
+
+export async function renderProductGrid(containerSelector) {
   const container = document.querySelector(containerSelector);
   if (!container) return;
 
-  const products = JSON.parse(localStorage.getItem('fad_products')) || window.productsData || [];
+  container.innerHTML = `<p style="text-align:center; color:#888; grid-column: 1/-1;">Loading...</p>`;
+
+  let products = [];
+  try {
+    products = await getProducts();
+  } catch (e) {
+    console.error("Failed to load products:", e);
+    container.innerHTML = `<p style="text-align:center; color:#888; grid-column: 1/-1;">Couldn't load products. Try refreshing.</p>`;
+    return;
+  }
+
+  products = products.filter(p => !p.isGift);
 
   if (products.length === 0) {
     container.innerHTML = `<p style="text-align:center; color:#888; grid-column: 1/-1;">NO PRODUCTS AVAILABLE</p>`;
@@ -10,7 +23,7 @@ function renderProductGrid(containerSelector) {
   }
 
   container.innerHTML = products.map(product => {
-    const isOutOfStock = product.outOfStock;
+    const isOutOfStock = product.soldOut;
     const imgPath = product.image || '';
 
     return `
@@ -21,9 +34,12 @@ function renderProductGrid(containerSelector) {
         </div>
         <div class="product-info">
           <h3 style="font-size:14px; margin-bottom:4px;">${product.title}</h3>
-          <p style="color:#ff0000; font-weight:bold;">$${product.price || '30'}</p>
+          <p style="color:#ff0000; font-weight:bold;">$${product.price ?? 30}</p>
         </div>
       </a>
     `;
   }).join('');
 }
+
+// index.html's inline script calls this the old way — keep it callable globally
+window.renderProductGrid = renderProductGrid;
