@@ -1,14 +1,20 @@
 // ============================================
-// FUCK A DRESS CODE - PRODUCT CATALOG
-// Edit this file or use the Admin panel to add/edit shirts
+// FUCK A DRESS CODE - PRODUCT CATALOG (Firestore-backed)
+// Edit products through the Admin panel, not this file.
 // ============================================
 
-const DEFAULT_PRODUCTS = [
+import { db } from "./firebase-config.js";
+import {
+  collection, getDocs, doc, setDoc, deleteDoc
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+
+// Starter catalog — only used when you click "Seed Starter Catalog" in admin
+export const DEFAULT_PRODUCTS = [
   {
     id: "rr-001",
-    name: "Richard Ramirez Tee",
+    title: "Richard Ramirez Tee",
     price: 45,
-    originalPrice: null, // set if on sale
+    originalPrice: null,
     description: "Hand-painted one-of-one. Night stalker energy. Edgy as fuck. Each piece is unique — no two are the same.",
     image: "https://placehold.co/600x750/111/fff?text=Richard+Ramirez+Tee",
     sizes: ["S", "M", "L", "XL", "XXL"],
@@ -20,7 +26,7 @@ const DEFAULT_PRODUCTS = [
   },
   {
     id: "placeholder-001",
-    name: "DIY Chaos Tee",
+    title: "DIY Chaos Tee",
     price: 40,
     originalPrice: null,
     description: "Raw hand-painted punk energy. Made to order / one-of-one.",
@@ -34,7 +40,7 @@ const DEFAULT_PRODUCTS = [
   },
   {
     id: "placeholder-002",
-    name: "No Rules Longsleeve",
+    title: "No Rules Longsleeve",
     price: 55,
     originalPrice: null,
     description: "Heavyweight hand-painted longsleeve. Wear it until it falls apart.",
@@ -45,43 +51,37 @@ const DEFAULT_PRODUCTS = [
     tags: ["hand-painted", "diy"],
     featured: false,
     soldOut: false
-  },
-  {
-    id: "mystery-free",
-    name: "Mystery Shirt (Free Gift)",
-    price: 0,
-    originalPrice: null,
-    description: "Surprise hand-painted piece. Only available as a free gift when you spend $75+.",
-    image: "https://placehold.co/600x750/111/fff?text=Mystery+Shirt",
-    sizes: ["One Size"],
-    stock: { "One Size": 999 },
-    category: "gift",
-    tags: ["free", "mystery"],
-    featured: false,
-    soldOut: false,
-    isGift: true
   }
 ];
 
-// Load products from localStorage if admin has made changes, otherwise use defaults
-function getProducts() {
-  const saved = localStorage.getItem("fad_products");
-  if (saved) {
-    try {
-      return JSON.parse(saved);
-    } catch (e) {
-      console.warn("Failed to parse saved products, using defaults");
-    }
+// Fetch all products live from Firestore — every visitor sees the same list
+export async function getProducts() {
+  const snapshot = await getDocs(collection(db, "products"));
+  return snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+}
+
+// Create or update a product (used by admin panel)
+export async function saveProduct(product) {
+  const id = product.id || ("diy-" + Date.now());
+  const { id: _drop, ...data } = product;
+  await setDoc(doc(db, "products", id), data);
+  return id;
+}
+
+export async function deleteProductById(id) {
+  await deleteDoc(doc(db, "products", id));
+}
+
+// One-time helper — pushes the starter catalog into the live database
+export async function seedDefaultProducts() {
+  for (const p of DEFAULT_PRODUCTS) {
+    const { id, ...data } = p;
+    await setDoc(doc(db, "products", id), data);
   }
-  return JSON.parse(JSON.stringify(DEFAULT_PRODUCTS));
 }
 
-function saveProducts(products) {
-  localStorage.setItem("fad_products", JSON.stringify(products));
-}
-
-// Discount codes - edit these or manage in admin later
-const DISCOUNT_CODES = {
+// Discount codes — static, edit directly here
+export const DISCOUNT_CODES = {
   "PUNK10": { type: "percent", value: 10, description: "10% off" },
   "DRESSCODE": { type: "fixed", value: 15, description: "$15 off" },
   "WELCOME15": { type: "percent", value: 15, description: "15% off — mailing list" },
