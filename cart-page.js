@@ -144,7 +144,58 @@ function removeItem(index) {
   renderCart();
 }
 
-function handleCheckout() {
-  // Stripe checkout wiring goes here — coming in the next step (C)
-  alert("Checkout is being wired up to Stripe next — hang tight!");
+async function handleCheckout() {
+  const btn = document.getElementById("checkout-btn");
+  const cart = getCart();
+
+  if (cart.length === 0) return;
+
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "REDIRECTING TO CHECKOUT...";
+  }
+
+  const subtotal = cart.reduce((sum, item) => sum + Number(item.price || 30), 0);
+  const finalTotal = computeFinalTotal(subtotal);
+  const discount = getAppliedDiscount();
+
+  const items = cart.map(item => ({
+    name: item.title,
+    size: item.size || "M",
+    image: item.image || "",
+    price: item.price || 30,
+    qty: 1
+  }));
+
+  const payload = {
+    items,
+    freePatch: subtotal >= 40,
+    freeMysteryShirt: subtotal >= 75,
+    freeShipping: subtotal >= 75,
+    discountAmount: +(subtotal - finalTotal).toFixed(2),
+    discountCode: discount ? discount.code : ""
+  };
+
+  try {
+    const res = await fetch("https://fadcheckout.rollieoveracker.workers.dev/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.url) {
+      throw new Error(data.error || "Checkout session failed to create.");
+    }
+
+    window.location.href = data.url;
+  } catch (err) {
+    console.error("Checkout error:", err);
+    alert("Something went wrong starting checkout: " + err.message);
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = "PROCEED TO CHECKOUT";
+    }
+  }
 }
