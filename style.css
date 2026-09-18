@@ -152,31 +152,34 @@ img {
 
 .product-card {
   position: relative;
-  background: rgba(10, 10, 10, 0.35);
-  border: 1px solid #222;
-  padding: 10px;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .product-image-wrap {
   position: relative;
   aspect-ratio: 4/5;
-  background: rgba(17, 17, 17, 0.85);
-  overflow: hidden;
+  background: transparent;
+  overflow: visible;
   margin-bottom: 8px;
 }
 
 .product-image-wrap img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 0 14px rgba(255, 0, 0, 0.55))
+    drop-shadow(0 0 30px rgba(255, 0, 0, 0.45))
+    drop-shadow(0 0 60px rgba(255, 0, 0, 0.3));
 }
 
 .product-info {
   text-align: center;
-  background: rgba(0, 0, 0, 0.85);
-  padding: 8px;
+  background: transparent;
+  padding: 8px 0;
 }
-
 /* ---------- ABOUT & MAILING LIST ---------- */
 .about-section {
   padding: 40px 20px;
@@ -252,9 +255,14 @@ img {
 .shop-bg {
   position: absolute;
   inset: 0;
-  background: url('silent-hill-bg.jpg') center/cover no-repeat;
+  background-image: url('silent-hill-bg.jpg');
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   filter: brightness(0.22) contrast(1.15) grayscale(0.15);
   z-index: 0;
+  pointer-events: none;
 }
 
 .shop-static-canvas {
