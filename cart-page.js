@@ -1,3 +1,5 @@
+import { DISCOUNT_CODES } from "./products.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   renderCart();
 
@@ -45,11 +47,15 @@ function renderCart() {
         </div>
         <div style="display:flex; align-items:center; gap:16px;">
           <span style="color:#ff0000; font-weight:bold;">$${item.price || 30}</span>
-          <button onclick="removeItem(${index})" style="background:none; border:none; color:#666; cursor:pointer; font-size:16px;">✕</button>
+          <button data-remove-index="${index}" style="background:none; border:none; color:#666; cursor:pointer; font-size:16px;">✕</button>
         </div>
       </div>
     `;
   }).join("");
+
+  container.querySelectorAll('[data-remove-index]').forEach(btn => {
+    btn.addEventListener('click', () => removeItem(parseInt(btn.dataset.removeIndex, 10)));
+  });
 
   const perks = getPromoPerks(subtotal);
   updateSummary(subtotal, computeFinalTotal(subtotal), perks);
@@ -73,7 +79,6 @@ function computeFinalTotal(subtotal) {
   if (discount.type === "fixed") {
     return Math.max(0, subtotal - discount.value);
   }
-  // free_item type doesn't change the cash total
   return subtotal;
 }
 
@@ -118,8 +123,7 @@ function applyDiscountCode() {
 
   if (!code) return;
 
-  const codes = (typeof DISCOUNT_CODES !== "undefined") ? DISCOUNT_CODES : {};
-  const match = codes[code];
+  const match = DISCOUNT_CODES[code];
 
   if (!match) {
     msg.textContent = "Invalid code.";
