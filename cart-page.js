@@ -29,7 +29,7 @@ function renderCart() {
 
   if (cart.length === 0) {
     container.innerHTML = `<p style="text-align:center; color:#888; padding: 40px 0;">YOUR CART IS EMPTY</p>`;
-    updateSummary(0, 0, []);
+    updateSummary(0, 0, [], 0);
     return;
   }
 
@@ -58,7 +58,8 @@ function renderCart() {
   });
 
   const perks = getPromoPerks(subtotal);
-  updateSummary(subtotal, computeFinalTotal(subtotal), perks);
+  const shipping = computeShipping(subtotal);
+  updateSummary(subtotal, computeFinalTotal(subtotal) + shipping, perks, shipping);
 }
 
 // Promo tiers: $40 free patch, $75 free shipping + mystery shirt
@@ -67,6 +68,10 @@ function getPromoPerks(subtotal) {
   if (subtotal >= 40) perks.push("Free patch unlocked");
   if (subtotal >= 75) perks.push("Free shipping + mystery shirt unlocked");
   return perks;
+}
+
+function computeShipping(subtotal) {
+  return subtotal >= 75 ? 0 : 5.99;
 }
 
 function computeFinalTotal(subtotal) {
@@ -82,7 +87,7 @@ function computeFinalTotal(subtotal) {
   return subtotal;
 }
 
-function updateSummary(subtotal, finalTotal, perks) {
+function updateSummary(subtotal, finalTotal, perks, shipping) {
   const summaryEl = document.getElementById("cart-summary");
   if (!summaryEl) return;
 
@@ -100,6 +105,10 @@ function updateSummary(subtotal, finalTotal, perks) {
     <div style="display:flex; justify-content:space-between; margin-top:12px;">
       <span>Subtotal:</span>
       <span>$${subtotal.toFixed(2)}</span>
+    </div>
+    <div style="display:flex; justify-content:space-between; margin-top:6px;">
+      <span>Shipping:</span>
+      <span>${shipping === 0 ? "FREE" : "$" + shipping.toFixed(2)}</span>
     </div>
     <div style="display:flex; justify-content:space-between; margin-top:6px; font-weight:bold; font-size:16px;">
       <span>TOTAL:</span>
