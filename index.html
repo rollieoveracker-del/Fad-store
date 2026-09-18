@@ -86,6 +86,7 @@
   <!-- app.js pulls in products.js itself (ES module import) -->
   <script type="module" src="app.js"></script>
   <script src="static-bg.js"></script>
+  <script src="audio-persist.js"></script>
 
   <script>
     // ---- EmailJS setup ----
@@ -127,26 +128,11 @@
     });
   </script>
   <script>
+    // Audio start/resume is now handled by audio-persist.js (shared across pages).
     document.addEventListener("DOMContentLoaded", () => {
       if (typeof renderProductGrid === 'function') {
         renderProductGrid("#product-grid");
       }
-
-      const audio = document.getElementById("bg-audio");
-      let audioStarted = false;
-
-      function startAudio() {
-        if (!audioStarted && audio) {
-          audio.play().then(() => {
-            audioStarted = true;
-            document.removeEventListener("touchstart", startAudio);
-            document.removeEventListener("click", startAudio);
-          }).catch(() => {});
-        }
-      }
-
-      document.addEventListener("touchstart", startAudio);
-      document.addEventListener("click", startAudio);
     });
   </script>
 </body>
