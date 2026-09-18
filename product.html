@@ -26,19 +26,30 @@
     <p>© 2026 fuck a Dress code &nbsp;|&nbsp; <a href="admin.html" style="color:#666;">Admin</a></p>
   </footer>
 
-  <script src="products.js?v=100"></script>
-  <script>
+  <script type="module">
+    import { getProducts } from "./products.js";
+
     let currentProduct = null;
     let selectedSize = 'M';
 
-    document.addEventListener("DOMContentLoaded", () => {
+    async function init() {
       const params = new URLSearchParams(window.location.search);
       const productId = params.get('id');
-      const products = JSON.parse(localStorage.getItem('fad_products')) || window.productsData || [];
-      
-      currentProduct = products.find(p => String(p.id) === String(productId)) || products[0];
 
       const container = document.getElementById('product-detail-container');
+      container.innerHTML = `<p style="color:#888;">Loading...</p>`;
+
+      let products = [];
+      try {
+        products = await getProducts();
+      } catch (e) {
+        console.error(e);
+        container.innerHTML = `<p style="color:#888;">Couldn't load product. Try refreshing.</p>`;
+        return;
+      }
+
+      currentProduct = products.find(p => String(p.id) === String(productId)) || products[0];
+
       if (!currentProduct) {
         container.innerHTML = `<p style="color:#888;">Product not found.</p>`;
         return;
@@ -53,8 +64,8 @@
 
         <div style="display:flex; flex-direction:column; justify-content:center;">
           <h1 style="font-family: var(--font-display); font-size:28px; text-transform:uppercase; margin-bottom:8px;">${currentProduct.title}</h1>
-          <p style="color:#ff0000; font-size:22px; font-weight:bold; margin-bottom:16px;">$${currentProduct.price || '30'}</p>
-          
+          <p style="color:#ff0000; font-size:22px; font-weight:bold; margin-bottom:16px;">$${currentProduct.price ?? 30}</p>
+
           <p style="color:#aaa; font-size:13px; line-height:1.6; margin-bottom:24px;">
             ${currentProduct.description || 'Hand-painted DIY garment. 100% heavy cotton.'}
           </p>
@@ -62,16 +73,21 @@
           <div style="margin-bottom:24px;">
             <label style="display:block; font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#888; margin-bottom:8px;">Select Size</label>
             <div style="display:flex; gap:10px;">
-              ${['S', 'M', 'L', 'XL', '2XL'].map(size => `
-                <button type="button" class="size-btn" onclick="selectSize(this, '${size}')" style="background:${size === 'M' ? '#ff0000' : '#111'}; color:#fff; border:1px solid ${size === 'M' ? '#ff0000' : '#333'}; padding:10px 14px; font-weight:bold; cursor:pointer;">${size}</button>
+              ${(currentProduct.sizes && currentProduct.sizes.length ? currentProduct.sizes : ['S', 'M', 'L', 'XL', '2XL']).map(size => `
+                <button type="button" class="size-btn" data-size="${size}" style="background:${size === 'M' ? '#ff0000' : '#111'}; color:#fff; border:1px solid ${size === 'M' ? '#ff0000' : '#333'}; padding:10px 14px; font-weight:bold; cursor:pointer;">${size}</button>
               `).join('')}
             </div>
           </div>
 
-          <button onclick="handleAddToCart()" style="width:100%; background:#ff0000; color:#fff; border:none; padding:16px; font-weight:bold; letter-spacing:1px; cursor:pointer;">ADD TO CART</button>
+          <button id="add-to-cart-btn" style="width:100%; background:#ff0000; color:#fff; border:none; padding:16px; font-weight:bold; letter-spacing:1px; cursor:pointer;">ADD TO CART</button>
         </div>
       `;
-    });
+
+      container.querySelectorAll('.size-btn').forEach(btn => {
+        btn.addEventListener('click', () => selectSize(btn, btn.dataset.size));
+      });
+      document.getElementById('add-to-cart-btn').addEventListener('click', handleAddToCart);
+    }
 
     function selectSize(btn, size) {
       document.querySelectorAll('.size-btn').forEach(b => {
@@ -85,7 +101,7 @@
 
     function handleAddToCart() {
       if (!currentProduct) return;
-      
+
       let cart = JSON.parse(localStorage.getItem('fad_cart')) || [];
       cart.push({
         id: currentProduct.id,
@@ -94,10 +110,12 @@
         image: currentProduct.image || '',
         size: selectedSize
       });
-      
+
       localStorage.setItem('fad_cart', JSON.stringify(cart));
       window.location.href = 'cart.html';
     }
+
+    document.addEventListener("DOMContentLoaded", init);
   </script>
 </body>
 </html>
