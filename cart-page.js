@@ -57,15 +57,21 @@ function renderCart() {
     btn.addEventListener('click', () => removeItem(parseInt(btn.dataset.removeIndex, 10)));
   });
 
-  const perks = getPromoPerks(subtotal);
+  const discount = getAppliedDiscount();
+  const perks = getPromoPerks(subtotal, discount);
   const shipping = computeShipping(subtotal);
   updateSummary(subtotal, computeFinalTotal(subtotal) + shipping, perks, shipping);
 }
 
+function hasFreePatchDiscount(discount) {
+  return !!discount && discount.type === "free_item" && discount.value === "patch";
+}
+
 // Promo tiers: $40 free patch, $75 free shipping + mystery shirt
-function getPromoPerks(subtotal) {
+// A "free_item" discount code (e.g. FREE PATCH) also unlocks the patch regardless of subtotal.
+function getPromoPerks(subtotal, discount) {
   const perks = [];
-  if (subtotal >= 40) perks.push("Free patch unlocked");
+  if (subtotal >= 40 || hasFreePatchDiscount(discount)) perks.push("Free patch unlocked");
   if (subtotal >= 75) perks.push("Free shipping + mystery shirt unlocked");
   return perks;
 }
@@ -178,7 +184,7 @@ async function handleCheckout() {
 
   const payload = {
     items,
-    freePatch: subtotal >= 40,
+    freePatch: subtotal >= 40 || hasFreePatchDiscount(discount),
     freeMysteryShirt: subtotal >= 75,
     freeShipping: subtotal >= 75,
     discountAmount: +(subtotal - finalTotal).toFixed(2),
