@@ -165,6 +165,11 @@ async function handleCheckout() {
 
   if (cart.length === 0) return;
 
+  // Extra safety net: this click is a real user gesture, so use it to make
+  // sure the music is running even if the page-load resume attempt got
+  // blocked by the browser's autoplay policy.
+  if (window.__fadAudio) window.__fadAudio.play().catch(() => {});
+
   if (btn) {
     btn.disabled = true;
     btn.textContent = "REDIRECTING TO CHECKOUT...";
