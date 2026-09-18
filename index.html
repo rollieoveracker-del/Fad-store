@@ -52,7 +52,9 @@
   </section>
 
   <!-- SHOP SECTION -->
-  <section class="section" id="shop">
+  <section class="section shop-section" id="shop">
+    <div class="shop-bg"></div>
+    <canvas id="shop-static-canvas" class="shop-static-canvas"></canvas>
     <div class="product-grid" id="product-grid"></div>
   </section>
 
@@ -83,6 +85,7 @@
 
   <!-- app.js pulls in products.js itself (ES module import) -->
   <script type="module" src="app.js"></script>
+  <script src="static-bg.js"></script>
 
   <script>
     // ---- EmailJS setup ----
