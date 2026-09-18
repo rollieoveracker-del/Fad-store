@@ -281,3 +281,73 @@ img {
   position: relative;
   z-index: 2;
 }
+
+/* ============================================
+   DESKTOP-ONLY OVERRIDES
+   Everything below only applies at 768px and up —
+   phones are completely untouched.
+   ============================================ */
+@media (min-width: 768px) {
+
+  /* Banner strip: let the anime images stretch across the whole bar
+     instead of staying cropped to a fixed 50x40 tile with empty space after. */
+  .site-header {
+    padding: 14px 24px;
+  }
+
+  .banner-strip {
+    overflow-x: visible;
+    gap: 10px;
+  }
+
+  .banner-img-crop {
+    height: 90px;
+    width: auto;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .cart-icon-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Hero: bigger gothic logo + cross icon (overrides the inline 50px size) */
+  .hero {
+    padding: 90px 20px;
+  }
+
+  .gothic-logo {
+    font-size: 160px !important;
+  }
+
+  .hero-cross-icon {
+    width: 110px !important;
+    height: 110px !important;
+  }
+
+  /* Product grid: auto-fill was reserving empty grid columns whenever there
+     were fewer products than would fit at 220px each, which is why the
+     shirts looked tiny and shoved to one side. auto-fit lets the real
+     products expand to fill the row instead. */
+  .section {
+    max-width: 1400px;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 48px 32px;
+  }
+
+  /* Silent Hill background: make the section fill the viewport height so
+     the image actually covers the screen instead of just wrapping the grid. */
+  .shop-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .shop-section .product-grid {
+    width: 100%;
+  }
+}
